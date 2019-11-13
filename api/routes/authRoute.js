@@ -1,19 +1,20 @@
 import express from 'express';
 import Auth from '../controllers/Auth';
-import Rules from '../middleware/validInputs';
+import Checks from '../middleware/validInputs';
+import validation from '../middleware/validation';
 
 const userRoute = express.Router();
 
 userRoute.post(
   '/user/api/signup',
-  Rules.authRules,
-  Rules.checkSignUp,
+  validation.validateUserInputs,
+  Checks.checkSignUp,
   Auth.signUp,
 );
 
 userRoute.post(
   '/user/api/login',
-  Rules.checkSignIn,
+  Checks.checkSignIn,
   Auth.login,
 );
 

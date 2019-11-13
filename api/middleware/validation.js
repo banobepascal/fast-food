@@ -1,10 +1,11 @@
 import Joi from 'joi';
+import exceptionHandler from '../helpers/exceptions';
+
+const stringValidator = new RegExp('^(^[a-zA-Z])(?=.*[a-z])');
+const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,12})');
 
 class Validation {
-  static validateUserInputs(user) {
-    const stringValidator = new RegExp('^(^[a-zA-Z])(?=.*[a-z])');
-    const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,12})');
-
+  static validateUserInputs(req, res, next) {
     const schema = {
       firstname: Joi.string().min(3).max(50).regex(stringValidator)
         .required()
@@ -37,9 +38,22 @@ class Validation {
         .error(() => ({
           message: 'Passwords don\'t match',
         })),
+      isAdmin: Joi.boolean().error(() => ({
+        message: 'isAdmin has to be a boolean',
+      })),
     };
 
-    return Joi.validate(user, schema);
+    return exceptionHandler(Joi.validate(req.body, schema), res, next);
+  }
+
+  static validateMenuItem(req, res, next) {
+    const schema = {
+      item: Joi.string().min(3).regex(stringValidator).error(() => ({
+        message: 'please enter valid item with 3 minimum letters',
+      })),
+    };
+
+    return exceptionHandler(Joi.validate(req.body, schema), res, next);
   }
 }
 

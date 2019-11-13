@@ -1,9 +1,9 @@
 import express from 'express';
 import userRoute from './api/routes/authRoute';
+import menuRoute from './api/routes/menuRoute';
 
 const app = express();
 app.use(express.json());
-
 
 // mongoose.connect(
 //   process.env.MONGO_DB || process.env.MONGO_TEST_DB,
@@ -15,5 +15,6 @@ app.use(express.json());
 //   .catch((err) => console.log('Failed to connect', err));
 
 app.use(userRoute);
+app.use(menuRoute);
 
 export default app;
