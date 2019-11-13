@@ -1,11 +1,12 @@
 import Menu from '../models/items';
 
-class Orders {
-  static async getOrders(req, res) {
+class MenuItems {
+  static async getMenu(req, res) {
     const orders = await Menu.find().sort('item');
+    console.log(orders[0].item);
     return res.status(200).json({
       status: 200,
-      message: 'got all orders',
+      message: 'Items on the menu',
       data: orders,
     });
   }
@@ -17,9 +18,9 @@ class Orders {
     return res.status(201).json({
       status: 201,
       message: 'Item added to menu',
-      data: item,
+      data: item.item,
     });
   }
 }
 
-export default Orders;
+export default MenuItems;
