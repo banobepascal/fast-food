@@ -5,7 +5,7 @@ const stringValidator = new RegExp('^(^[a-zA-Z])(?=.*[a-z])');
 const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,12})');
 
 class Validation {
-  static validateUserInputs(req, res, next) {
+  validateUserInputs(req, res, next) {
     const schema = {
       firstname: Joi.string().min(3).max(50).regex(stringValidator)
         .required()
@@ -46,15 +46,29 @@ class Validation {
     return exceptionHandler(Joi.validate(req.body, schema), res, next);
   }
 
-  static validateMenuItem(req, res, next) {
+  validateMenuItem(req, res, next) {
     const schema = {
-      item: Joi.string().min(3).regex(stringValidator).error(() => ({
-        message: 'please enter valid item with 3 minimum letters',
-      })),
+      item: Joi.string().min(3).regex(stringValidator)
+        .required()
+        .error(() => ({
+          message: 'please enter valid item with 3 minimum letters',
+        })),
+    };
+
+    return exceptionHandler(Joi.validate(req.body, schema), res, next);
+  }
+
+  validateOrder(req, res, next) {
+    const schema = {
+      order: Joi.string().min(3).regex(stringValidator)
+        .required()
+        .error(() => ({
+          message: 'please place a valid order with 3 minimum letters',
+        })),
     };
 
     return exceptionHandler(Joi.validate(req.body, schema), res, next);
   }
 }
 
-export default Validation;
+export default new Validation();

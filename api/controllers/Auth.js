@@ -2,7 +2,7 @@ import User from '../models/user';
 import Helpers from '../helpers/verifications';
 
 class Auth {
-  static async signUp(req, res) {
+  async signUp(req, res) {
     const user = new User({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -23,7 +23,7 @@ class Auth {
     });
   }
 
-  static async login(req, res) {
+  async login(req, res) {
     const checkUsername = await User.findOne({ username: req.body.username });
     const token = Helpers.generateToken(checkUsername.id, checkUsername.isAdmin);
     return res.status(200).json({
@@ -34,4 +34,4 @@ class Auth {
   }
 }
 
-export default Auth;
+export default new Auth();

@@ -1,7 +1,7 @@
 import Menu from '../models/items';
 
 class MenuItems {
-  static async getMenu(req, res) {
+  async getMenu(req, res) {
     const orders = await Menu.find().sort('item');
     return res.status(200).json({
       status: 200,
@@ -10,7 +10,7 @@ class MenuItems {
     });
   }
 
-  static async postItem(req, res) {
+  async postItem(req, res) {
     let item = new Menu({ item: req.body.item });
     item = await item.save();
 
@@ -21,7 +21,7 @@ class MenuItems {
     });
   }
 
-  static async editItem(req, res) {
+  async editItem(req, res) {
     const item = await Menu.findOneAndUpdate(req.params.id, { item: req.body.item }, {
       new: true,
     });
@@ -33,7 +33,7 @@ class MenuItems {
     });
   }
 
-  static async deleteItem(req, res) {
+  async deleteItem(req, res) {
     const item = await Menu.findOneAndDelete(req.params.id);
     return res.status(200).json({
       status: 200,
@@ -43,4 +43,4 @@ class MenuItems {
   }
 }
 
-export default MenuItems;
+export default new MenuItems();

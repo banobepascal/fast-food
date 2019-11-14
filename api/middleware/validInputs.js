@@ -1,11 +1,11 @@
-/* eslint-disable consistent-return */
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import Menu from '../models/items';
+import Orders from '../models/order';
 
 class Checks {
-  static async checkSignUp(req, res, next) {
+  async checkSignUp(req, res, next) {
     const checkUsername = await User.findOne({ username: req.body.username });
     if (checkUsername) {
       return res.status(409).json({
@@ -24,7 +24,7 @@ class Checks {
     next();
   }
 
-  static async checkSignIn(req, res, next) {
+  async checkSignIn(req, res, next) {
     const checkUsername = await User.findOne({ username: req.body.username });
     if (!checkUsername) {
       return res.status(400).json({
@@ -46,7 +46,7 @@ class Checks {
     next();
   }
 
-  static async checkItemConflict(req, res, next) {
+  async checkItemConflict(req, res, next) {
     const item = await Menu.findOne({ item: req.body.item });
     if (item) {
       return res.status(409).json({
@@ -57,15 +57,8 @@ class Checks {
     next();
   }
 
-  static async checkItemId(req, res, next) {
+  async checkItemId(req, res, next) {
     const item = await Menu.findById(req.params.id);
-    if (req.params.id !== mongoose.Types.ObjectId()) {
-      return res.status(404).json({
-        status: 404,
-        error: 'item with given id is not on the menu',
-      });
-    }
-
     if (!item) {
       return res.status(404).json({
         status: 404,
@@ -74,6 +67,17 @@ class Checks {
     }
     next();
   }
+
+  async checkOrder(req, res, next) {
+    const order = await Orders.findOne({ order: req.body.order });
+    if (!order) {
+      return res.status(404).json({
+        status: 404,
+        error: 'item ordered is not on the menu',
+      });
+    }
+    next();
+  }
 }
 
-export default Checks;
+export default new Checks();

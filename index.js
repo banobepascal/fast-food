@@ -1,6 +1,7 @@
 import express from 'express';
 import userRoute from './api/routes/authRoute';
 import menuRoute from './api/routes/menuRoute';
+import orderRoutes from './api/routes/orderRoute';
 
 const app = express();
 app.use(express.json());
@@ -16,5 +17,6 @@ app.use(express.json());
 
 app.use(userRoute);
 app.use(menuRoute);
+app.use(orderRoutes);
 
 export default app;

@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 
 const admin = (req, res, next) => {
   if (!req.user._isAdmin) {

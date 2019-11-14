@@ -1,6 +1,6 @@
 import express from 'express';
 import MenuItems from '../controllers/menu';
-import validation from '../middleware/validation';
+import Validation from '../middleware/validation';
 import verifyToken from '../middleware/authorization';
 import admin from '../middleware/adminAuth';
 import Checks from '../middleware/validInputs';
@@ -18,7 +18,7 @@ menuRoute.post(
   '/api/fast-food/menu',
   verifyToken,
   admin,
-  validation.validateMenuItem,
+  Validation.validateMenuItem,
   Checks.checkItemConflict,
   MenuItems.postItem,
 );
@@ -28,7 +28,7 @@ menuRoute.put(
   verifyToken,
   admin,
   Checks.checkItemId,
-  validation.validateMenuItem,
+  Validation.validateMenuItem,
   Checks.checkItemConflict,
   MenuItems.editItem,
 );
