@@ -22,6 +22,10 @@ if (process.env.NODE_ENV === 'test') {
     debug(`App listening on port ${config.port}`);
   });
 }
+
+mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
+
 mongoose.connection.on('connected', () => {
   dbDebug(`mongoose default connection open to ${config.db}`);
 });

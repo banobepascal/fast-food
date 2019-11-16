@@ -1,6 +1,8 @@
 import Joi from 'joi';
 import exceptionHandler from '../helpers/exceptions';
 
+Joi.objectId = require('joi-objectid')(Joi);
+
 const stringValidator = new RegExp('^(^[a-zA-Z])(?=.*[a-z])');
 const validPassword = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,12})');
 
@@ -60,10 +62,38 @@ class Validation {
 
   validateOrder(req, res, next) {
     const schema = {
-      order: Joi.string().min(3).regex(stringValidator)
+      item: Joi.string().min(3).regex(stringValidator)
         .required()
         .error(() => ({
           message: 'please place a valid order with 3 minimum letters',
+        })),
+    };
+
+    return exceptionHandler(Joi.validate(req.body, schema), res, next);
+  }
+
+  validateOrderUpdate(req, res, next) {
+    const schema = {
+      orderFlag: Joi.string().min(7).lowercase().valid(['accepted', 'declined'])
+        .required()
+        .error(() => ({
+          message: 'Order flag is either Accepted or Declined',
+        })),
+      orderStatus: Joi.string().min(7).lowercase().valid('completed')
+        .required()
+        .error(() => ({
+          message: 'Order status has to be completed',
+        })),
+    };
+
+    return exceptionHandler(Joi.validate(req.body, schema), res, next);
+  }
+
+  validateUserId(req, res, next) {
+    const schema = {
+      userId: Joi.objectId().min(3).required()
+        .error(() => ({
+          message: 'please provide correct Object Id',
         })),
     };
 

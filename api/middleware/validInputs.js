@@ -69,11 +69,44 @@ class Checks {
   }
 
   async checkOrder(req, res, next) {
-    const order = await Orders.findOne({ order: req.body.order });
+    const item = await Menu.findOne({ item: req.body.item });
+    if (!item) {
+      return res.status(404).json({
+        status: 404,
+        error: `${req.body.item} is not on the menu`,
+      });
+    }
+    next();
+  }
+
+  async checkUserOrders(req, res, next) {
+    const items = await Orders.find();
+    if (items < 1) {
+      return res.status(404).json({
+        status: 404,
+        message: 'You have no orders now',
+      });
+    }
+    next();
+  }
+
+  async checkOrderId(req, res, next) {
+    const order = await Orders.findById(req.params.id);
     if (!order) {
       return res.status(404).json({
         status: 404,
-        error: 'item ordered is not on the menu',
+        error: 'Order with given id not found',
+      });
+    }
+    next();
+  }
+
+  async checkUserId(req, res, next) {
+    const userId = await Orders.findOne({ userId: req.body.userId });
+    if (!userId) {
+      return res.status(404).json({
+        status: 404,
+        error: 'user doesnt exist',
       });
     }
     next();

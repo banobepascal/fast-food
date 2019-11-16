@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 const Orders = mongoose.model('Orders', new mongoose.Schema({
-  order: {
+  userId: mongoose.Types.ObjectId,
+  item: {
     type: String,
     minlength: 3,
     required: true,
@@ -9,6 +10,16 @@ const Orders = mongoose.model('Orders', new mongoose.Schema({
   timeOrdered: {
     type: Date,
     default: Date.now,
+  },
+  orderFlag: {
+    type: String,
+    minlength: 7,
+    default: 'Processing',
+  },
+  orderStatus: {
+    type: String,
+    minlength: 7,
+    default: 'Processing',
   },
 }));
 
