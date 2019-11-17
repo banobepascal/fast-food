@@ -6,14 +6,14 @@ import validation from '../middleware/validation';
 const userRoute = express.Router();
 
 userRoute.post(
-  '/user/api/signup',
+  '/api/auth/signup',
   validation.validateUserInputs,
   Checks.checkSignUp,
   Auth.signUp,
 );
 
 userRoute.post(
-  '/user/api/login',
+  '/api/auth/login',
   Checks.checkSignIn,
   Auth.login,
 );

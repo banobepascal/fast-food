@@ -7,20 +7,20 @@ import verifyToken from '../middleware/authorization';
 const orderRoutes = express.Router();
 
 orderRoutes.get(
-  '/api/users/orders',
+  '/api/fast-food/users/orders',
   Checks.checkUserOrders,
   OrderList.getOrders,
 );
 
 orderRoutes.get(
-  '/api/orders/:id',
+  '/api/fast-food/orders/:id',
   verifyToken,
   Checks.checkOrderId,
   OrderList.getSpecificOrder,
 );
 
 orderRoutes.get(
-  '/api/users/orders/history',
+  '/api/fast-food/orders/history',
   verifyToken,
   Validation.validateUserId,
   Checks.checkUserId,
@@ -28,7 +28,7 @@ orderRoutes.get(
 );
 
 orderRoutes.post(
-  '/api/users/orders',
+  '/api/fast-food/orders',
   verifyToken,
   Validation.validateMenuItem,
   Checks.checkOrder,
@@ -36,7 +36,7 @@ orderRoutes.post(
 );
 
 orderRoutes.put(
-  '/api/orders/:id',
+  '/api/fast-food/orders/:id',
   verifyToken,
   Checks.checkOrderId,
   Validation.validateOrderUpdate,
